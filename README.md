@@ -164,16 +164,17 @@ Filesystem = Disk (persistent, unlimited)
 
 ## Usage
 
-Once installed, Claude will automatically:
+Once installed, the AI agent will:
 
-1. **Create `task_plan.md`** before starting complex tasks
-2. **Re-read plan** before major decisions (via PreToolUse hook)
-3. **Remind you** to update status after file writes (via PostToolUse hook)
-4. **Store findings** in `findings.md` instead of stuffing context
-5. **Log errors** for future reference
-6. **Verify completion** before stopping (via Stop hook)
+1. **Ask for your task** if no description is provided
+2. **Create `task_plan.md`, `findings.md`, and `progress.md`** in your project directory
+3. **Re-read plan** before major decisions (via PreToolUse hook)
+4. **Remind you** to update status after file writes (via PostToolUse hook)
+5. **Store findings** in `findings.md` instead of stuffing context
+6. **Log errors** for future reference
+7. **Verify completion** before stopping (via Stop hook)
 
-Or invoke manually:
+Invoke with:
 - `/planning-with-files:plan` - Type `/plan` to find in autocomplete (v2.11.0+)
 - `/planning-with-files:start` - Type `/planning` to find in autocomplete
 - `/planning-with-files` - Only if you copied skills to `~/.claude/skills/`
@@ -322,6 +323,7 @@ See [docs/kilocode.md](docs/kilocode.md) for detailed Kilo Code integration guid
 |------|--------|----------|
 | [devis](https://github.com/st01cs/devis) | [@st01cs](https://github.com/st01cs) | Interview-first workflow, `/devis:intv` and `/devis:impl` commands, guaranteed activation |
 | [multi-manus-planning](https://github.com/kmichels/multi-manus-planning) | [@kmichels](https://github.com/kmichels) | Multi-project support, SessionStart git sync |
+| [plan-cascade](https://github.com/Taoidle/plan-cascade) | [@Taoidle](https://github.com/Taoidle) | Multi-level task orchestration, parallel execution, multi-agent collaboration |
 
 *Built something? Open an issue to get listed!*
 

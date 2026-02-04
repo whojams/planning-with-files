@@ -1,18 +1,14 @@
 #!/bin/bash
 # Check if all phases in task_plan.md are complete
-# Exit 0 if complete, exit 1 if incomplete
-# Used by Stop hook to verify task completion
+# Always exits 0 — uses stdout for status reporting
+# Used by Stop hook to report task completion status
 
 PLAN_FILE="${1:-task_plan.md}"
 
 if [ ! -f "$PLAN_FILE" ]; then
-    echo "ERROR: $PLAN_FILE not found"
-    echo "Cannot verify completion without a task plan."
-    exit 1
+    echo "[planning-with-files] No task_plan.md found — no active planning session."
+    exit 0
 fi
-
-echo "=== Task Completion Check ==="
-echo ""
 
 # Count total phases
 TOTAL=$(grep -c "### Phase" "$PLAN_FILE" || true)
@@ -35,19 +31,16 @@ fi
 : "${IN_PROGRESS:=0}"
 : "${PENDING:=0}"
 
-echo "Total phases:   $TOTAL"
-echo "Complete:       $COMPLETE"
-echo "In progress:    $IN_PROGRESS"
-echo "Pending:        $PENDING"
-echo ""
-
-# Check completion
+# Report status (always exit 0 — incomplete task is a normal state)
 if [ "$COMPLETE" -eq "$TOTAL" ] && [ "$TOTAL" -gt 0 ]; then
-    echo "ALL PHASES COMPLETE"
-    exit 0
+    echo "[planning-with-files] ALL PHASES COMPLETE ($COMPLETE/$TOTAL)"
 else
-    echo "TASK NOT COMPLETE"
-    echo ""
-    echo "Do not stop until all phases are complete."
-    exit 1
+    echo "[planning-with-files] Task in progress ($COMPLETE/$TOTAL phases complete)"
+    if [ "$IN_PROGRESS" -gt 0 ]; then
+        echo "[planning-with-files] $IN_PROGRESS phase(s) still in progress."
+    fi
+    if [ "$PENDING" -gt 0 ]; then
+        echo "[planning-with-files] $PENDING phase(s) pending."
+    fi
 fi
+exit 0
